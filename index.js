@@ -2,14 +2,14 @@ const express = require("express");
 const { STATUS_CODES } = require("http");
 const app = express();
 require("dotenv").config();
-const port = 3100;
 const querystring = require("querystring");
 const axios = require("axios");
-
 const CLIENT_ID = process.env.CLIENT_ID;
 const CLIENT_SECRET = process.env.CLIENT_SECRET;
 const REDIRECT_URI = process.env.REDIRECT_URI;
 const stateKey = "spotify_auth_state";
+const FRONT_END_URI = process.env.FRONT_END_URI;
+const PORT = process.env.PORT || 3100;
 
 const generateRandomString = (length) => {
   let text = "";
@@ -79,9 +79,8 @@ app.get("/callback", (req, res) => {
           refresh_token,
           expires_in,
         });
-        //redirecting to front-end
-        // pass along params
-        res.redirect("http://localhost:3000/?" + queryParams);
+
+        res.redirect((FRONT_END_URI)+ "?" + queryParams);
       } else {
         res.redirect(`/?${querystring.stringify({ error: 'invalid_token' })}`);
       }
@@ -118,7 +117,7 @@ app.get("/refresh_token", (req, res) => {
 
 module.exports = app;
 
-app.listen(port, () => {
-  console.log("Connected at http://localhost:" + port);
+app.listen(PORT, () => {
+  console.log("Connected at http://localhost:" + PORT);
 });
 
