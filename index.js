@@ -32,7 +32,7 @@ app.get("/", (req, res) => {
 app.get("/test", (req, res) => {
   let data = {
     name: "Test",
-    city: "Toronto",
+    status: "Success",
   };
   res.json(data);
 });
